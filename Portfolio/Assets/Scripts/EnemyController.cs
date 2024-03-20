@@ -10,30 +10,37 @@ public class EnemyController : MonoBehaviour
 
     public GameObject Walk;
     public GameObject Peek;
+    public CapsuleCollider peekCollider;
 
     public bool safe;
+    public bool seen;
 
     private void Start()
     {       
-        //curCover = manager.GetComponent<EnemyManagerScript>().coverPoints[0];
-        agent.SetDestination(curCover.transform.position);
+
         safe = false;
 
-        //Walk = transform.GetChild(0).gameObject;
-        //Peek = transform.GetChild(1).gameObject;
+        curCover = null;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if ((curCover.GetComponent<CoverPointScript>().coverLevel <= manager.GetComponent<EnemyManagerScript>().stealth) || (curCover == null))
+        if (curCover == null)
+        {
+            safe = false;
+        }
+        else if (curCover.GetComponent<CoverPointScript>().coverLevel <= manager.GetComponent<EnemyManagerScript>().stealth)
         {
             safe = false; 
+        }
+        else if (seen)
+        {
+            safe = false;
+            seen = false;
         }
         else
         {
             safe = true;
-
         }
 
 
@@ -42,23 +49,27 @@ public class EnemyController : MonoBehaviour
             Walk.SetActive(true);
             Peek.SetActive(false);
 
-            //transform.eulerAngles = agent.velocity;
+            
         }
         else
         {
             Walk.SetActive(false);
             Peek.SetActive(true);
 
-            if (curCover.transform.parent.name.Substring(2) == "R")
+            if (curCover != null)
             {
-                Peek.transform.localScale = new Vector3(-1, Peek.transform.localScale.y, Peek.transform.localScale.z);
-            }
-            else if (curCover.transform.parent.name.Substring(2) == "L")
-            {
-                Peek.transform.localScale = new Vector3(1, Peek.transform.localScale.y, Peek.transform.localScale.z);
+                if (curCover.transform.parent.name.Substring(2) == "R")
+                {
+                    Peek.transform.localScale = new Vector3(-1, Peek.transform.localScale.y, Peek.transform.localScale.z);
+                }
+                else if (curCover.transform.parent.name.Substring(2) == "L")
+                {
+                    Peek.transform.localScale = new Vector3(1, Peek.transform.localScale.y, Peek.transform.localScale.z);
+                }
+
+                transform.rotation = curCover.transform.rotation;
             }
 
-            transform.rotation = curCover.transform.rotation;
 
         }
 
@@ -69,5 +80,10 @@ public class EnemyController : MonoBehaviour
     {
         curCover = cover;
         agent.SetDestination(curCover.transform.position);
+    }
+
+    public void run()
+    {
+        seen = true;
     }
 }

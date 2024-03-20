@@ -27,16 +27,17 @@ public class EnemyManagerScript : MonoBehaviour
         {
             if (e.GetComponent<EnemyController>().safe == false)
             {
-                GameObject targetCover = validCover[Random.Range(0, validCover.Count)];
+                GameObject targetCover = validCover[Random.Range(0, validCover.Count - 1)];
                 e.GetComponent<EnemyController>().setTarget(targetCover);
                 validCover.Remove(targetCover);
-
             }
         }
     }
 
     private void findValidCover()
     {
+        validCover.Clear();
+
         foreach (GameObject cover in coverPoints)
         {
             if ((cover.GetComponent<CoverPointScript>().coverLevel > stealth))
@@ -48,10 +49,14 @@ public class EnemyManagerScript : MonoBehaviour
             {
                 if (e.GetComponent<EnemyController>().curCover == cover)
                 {
-                    validCover.Remove(cover);
+                    validCover.Remove(cover);                    
                 }
             }
         }
         
     }
+
+
+    //enemy that tries to get behind the player
+    //enemy
 }

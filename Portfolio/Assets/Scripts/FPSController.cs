@@ -76,4 +76,12 @@ public class FPSController : MonoBehaviour
 
         #endregion
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "PeekPoint")
+        {
+            other.transform.parent.parent.GetComponent<EnemyController>().run();
+        }
+    }
 }

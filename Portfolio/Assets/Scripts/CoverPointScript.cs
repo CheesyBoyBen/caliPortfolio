@@ -19,7 +19,7 @@ public class CoverPointScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        coverLevel = 2;
+        coverLevel = 1;
         player = GameObject.Find("Player");
         coverObject = transform.parent.parent.gameObject;
 
@@ -28,29 +28,37 @@ public class CoverPointScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region Handles Raycast
-        LayerMask layer = LayerMask.GetMask("Player");
-        RaycastHit hit;
 
-
-        if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized, out hit, Mathf.Infinity))
+        if ((player.transform.position - transform.position).magnitude < 20)
         {
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * hit.distance, Color.yellow);
-            if (hit.transform.gameObject == coverObject)
+            #region Handles Raycast
+            LayerMask layer = LayerMask.GetMask("Player");
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized, out hit, Mathf.Infinity))
             {
-                coverLevel = 2;
+                Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * hit.distance, Color.yellow);
+                if (hit.transform.gameObject == coverObject)
+                {
+                    coverLevel = 2;
+                }
+                if (hit.transform.gameObject == player)
+                {
+                    coverLevel = 0;
+                }
             }
-            if (hit.transform.gameObject == player)
+            else
             {
-                coverLevel = 0;
+                Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * 1000, Color.white);
             }
+
+            #endregion
         }
         else
         {
-            Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * 1000, Color.white);            
+            coverLevel = 1;
         }
-
-        #endregion
 
         if ((coverOverride) && (coverLevel == 2))
         {
