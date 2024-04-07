@@ -18,6 +18,9 @@ public class FPSController : MonoBehaviour
     float rotationX = 0;
 
     public bool canMove = true;
+    GameObject heldScarecrow = null;
+
+    public GameObject scarecrow;
 
     CharacterController characterController;
 
@@ -75,13 +78,59 @@ public class FPSController : MonoBehaviour
         }
 
         #endregion
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "PeekPoint")
+        if ((Input.GetKeyDown(KeyCode.Mouse0)) && (heldScarecrow == null))
         {
-            other.transform.parent.parent.GetComponent<EnemyController>().run();
+            GameObject sc = Instantiate(scarecrow, new Vector3(transform.position.x, -0.08f, transform.position.z + 2f), transform.rotation);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (heldScarecrow == null)
+            {
+                GameObject[] mirrors = GameObject.FindGameObjectsWithTag("Mirror");
+                GameObject[] scarecrows = GameObject.FindGameObjectsWithTag("Player");
+                GameObject closest = mirrors[0];
+
+                foreach (GameObject m in mirrors)
+                {
+                    if ((transform.position - m.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                    {
+                        closest = m;
+                    }
+                }
+                foreach (GameObject s in scarecrows)
+                {
+                    if (s != this.gameObject)
+                    {
+                        if ((transform.position - s.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                        {
+                            closest = s;
+                        }
+                    }
+                }
+
+                if ((transform.position - closest.transform.position).magnitude < 3)
+                {
+                    if (closest.tag == "Mirror")
+                    {
+                        closest.GetComponent<MirrorScript>().turn();
+                    }
+                    if (closest.tag == "Player")
+                    {
+                        closest.GetComponent<ScarecrowScript>().PickUp();
+                        heldScarecrow = closest;
+                    }
+                }
+            }
+            else if (heldScarecrow != null)
+            {
+                heldScarecrow.GetComponent<ScarecrowScript>().Drop();
+                heldScarecrow = null;
+            }
+
         }
     }
+
+
 }

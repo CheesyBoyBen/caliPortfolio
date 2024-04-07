@@ -9,8 +9,10 @@ public class CoverPointScript : MonoBehaviour
     public Material HeavyCover;
     public int coverLevel;
 
-    private GameObject player;
-    private GameObject coverObject;
+    private GameObject mirror;
+    public List<GameObject> targets;
+
+    public GameObject coverObject;
 
 
 
@@ -20,45 +22,60 @@ public class CoverPointScript : MonoBehaviour
     void Start()
     {
         coverLevel = 1;
-        player = GameObject.Find("Player");
+        mirror = GameObject.Find("Mirror");
         coverObject = transform.parent.parent.gameObject;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        targets.Clear();
 
-        if ((player.transform.position - transform.position).magnitude < 20)
+        targets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+
+
+        #region Handles Raycast
+        RaycastHit hit;
+
+        foreach (GameObject t in targets)
         {
-            #region Handles Raycast
-            LayerMask layer = LayerMask.GetMask("Player");
-            RaycastHit hit;
-
-
-            if (Physics.Raycast(transform.position, (player.transform.position - transform.position).normalized, out hit, Mathf.Infinity))
+            if (Physics.Raycast(transform.position, (t.transform.position - transform.position).normalized, out hit, Mathf.Infinity))
             {
-                Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * hit.distance, Color.yellow);
+
                 if (hit.transform.gameObject == coverObject)
                 {
                     coverLevel = 2;
                 }
-                if (hit.transform.gameObject == player)
+                if (hit.transform.gameObject.tag == "Player")
                 {
+                    Debug.DrawRay(transform.position, (t.transform.position - transform.position).normalized * hit.distance, Color.yellow);
+
                     coverLevel = 0;
+                    break;
                 }
             }
-            else
-            {
-                Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized * 1000, Color.white);
-            }
+        }
 
-            #endregion
-        }
-        else
+        if (mirror != null)
         {
-            coverLevel = 1;
+            for (int i = 0; i < mirror.transform.childCount; i++)
+            {
+                if (Physics.Raycast(transform.position, (mirror.transform.GetChild(i).position - transform.position).normalized, out hit, Mathf.Infinity))
+                {
+
+                    if (hit.transform.gameObject.tag == "Mirror")
+                    {
+                        Debug.DrawRay(transform.position, (mirror.transform.GetChild(i).transform.position - transform.position).normalized * hit.distance, Color.yellow);
+
+                        coverLevel = 0;
+                        break;
+                    }
+                }
+            }
         }
+
+        #endregion
+
 
         if ((coverOverride) && (coverLevel == 2))
         {

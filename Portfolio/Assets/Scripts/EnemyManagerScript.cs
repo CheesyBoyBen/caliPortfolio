@@ -9,6 +9,8 @@ public class EnemyManagerScript : MonoBehaviour
     public GameObject[] coverPoints;
     public List<GameObject> validCover;
 
+    public GameObject end;
+
     public int stealth;
 
     // Start is called before the first frame update
@@ -27,9 +29,18 @@ public class EnemyManagerScript : MonoBehaviour
         {
             if (e.GetComponent<EnemyController>().safe == false)
             {
-                GameObject targetCover = validCover[Random.Range(0, validCover.Count - 1)];
-                e.GetComponent<EnemyController>().setTarget(targetCover);
-                validCover.Remove(targetCover);
+
+                if (validCover.Count > 0)
+                {
+                    GameObject targetCover = validCover[Random.Range(0, validCover.Count - 1)];
+                    e.GetComponent<EnemyController>().setTarget(targetCover);
+                    validCover.Remove(targetCover);
+                }
+                else
+                {
+                    e.GetComponent<EnemyController>().setTarget(end);
+                }
+
             }
         }
     }

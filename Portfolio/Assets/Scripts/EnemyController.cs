@@ -29,14 +29,13 @@ public class EnemyController : MonoBehaviour
         {
             safe = false;
         }
+        else if (curCover.name == "End Door")
+        {
+            safe = false;
+        }
         else if (curCover.GetComponent<CoverPointScript>().coverLevel <= manager.GetComponent<EnemyManagerScript>().stealth)
         {
             safe = false; 
-        }
-        else if (seen)
-        {
-            safe = false;
-            seen = false;
         }
         else
         {
@@ -56,7 +55,7 @@ public class EnemyController : MonoBehaviour
             Walk.SetActive(false);
             Peek.SetActive(true);
 
-            if (curCover != null)
+            if ((curCover != null) && (curCover.name != "End Door"))
             {
                 if (curCover.transform.parent.name.Substring(2) == "R")
                 {
@@ -82,8 +81,5 @@ public class EnemyController : MonoBehaviour
         agent.SetDestination(curCover.transform.position);
     }
 
-    public void run()
-    {
-        seen = true;
-    }
+
 }
