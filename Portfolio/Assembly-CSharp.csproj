@@ -56,21 +56,21 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\pauseManagerScript.cs" />
     <Compile Include="Assets\Scripts\levelManagerScript.cs" />
     <Compile Include="Assets\Scripts\MirrorScript.cs" />
     <Compile Include="Assets\Scripts\ScarecrowScript.cs" />
     <Compile Include="Assets\_Heathen Engineering\Samples\UX Examples\Flat Icons [Free]\ToggleSetAnimatorBoolean.cs" />
     <Compile Include="Assets\Scripts\CoverPointScript.cs" />
     <Compile Include="Assets\Scripts\CoverObjectScript.cs" />
+    <Compile Include="Assets\Scripts\menuManagerScript.cs" />
+    <Compile Include="Assets\Scripts\completeScript.cs" />
     <Compile Include="Assets\PlanarReflection\PlanarReflection\PlanarReflectionManager.cs" />
     <Compile Include="Assets\Scripts\EnemyManagerScript.cs" />
+    <Compile Include="Assets\Scripts\backgroundScript.cs" />
     <Compile Include="Assets\Scripts\FPSController.cs" />
     <Compile Include="Assets\Scripts\doorScript.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
-    <Compile Include="Assets\Scripts\menuManagerScript.cs" />
-    <Compile Include="Assets\Scripts\pauseManagerScript.cs" />
-    <Compile Include="Assets\Scripts\backgroundScript.cs" />
-    <Compile Include="Assets\Scripts\completeScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

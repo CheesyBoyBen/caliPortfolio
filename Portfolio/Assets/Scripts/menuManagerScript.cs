@@ -40,7 +40,7 @@ public class menuManagerScript : MonoBehaviour
     public void exit()
     {
         Application.Quit();
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
     }
 
     public void back()
