@@ -13,36 +13,48 @@ public class EnemyManagerScript : MonoBehaviour
 
     public int stealth;
 
+    public GameObject levelManager;
+
+    bool condition = false;
+
     // Start is called before the first frame update
     void Start()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         coverPoints = GameObject.FindGameObjectsWithTag("Cover");
+
+        levelManager = GameObject.FindGameObjectWithTag("GameController");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        findValidCover();
-
-        foreach (GameObject e in enemies)
+        if (!condition)
         {
-            if (e.GetComponent<EnemyController>().safe == false)
+            findValidCover();
+
+            foreach (GameObject e in enemies)
             {
-
-                if (validCover.Count > 0)
+                if (e.GetComponent<EnemyController>().safe == false)
                 {
-                    GameObject targetCover = validCover[Random.Range(0, validCover.Count - 1)];
-                    e.GetComponent<EnemyController>().setTarget(targetCover);
-                    validCover.Remove(targetCover);
-                }
-                else
-                {
-                    e.GetComponent<EnemyController>().setTarget(end);
-                }
 
+                    if (validCover.Count > 0)
+                    {
+                        GameObject targetCover = validCover[Random.Range(0, validCover.Count - 1)];
+                        e.GetComponent<EnemyController>().setTarget(targetCover);
+                        validCover.Remove(targetCover);
+                    }
+                    else
+                    {
+                        e.GetComponent<EnemyController>().setTarget(end);
+                    }
+
+                }
             }
-        }
+
+            endCondition();
+        }        
     }
 
     private void findValidCover()
@@ -67,7 +79,22 @@ public class EnemyManagerScript : MonoBehaviour
         
     }
 
+    private void endCondition()
+    {
+        int i = 0;
+        foreach (GameObject e in enemies)
+        {
+            if (e.GetComponent<EnemyController>().curCover == end)
+            {
+                i++;
+            }
+            
+        }
 
-    //enemy that tries to get behind the player
-    //enemy
+        if (i == enemies.Length)
+        {
+            condition = true;
+            levelManager.GetComponent<levelManagerScript>().complete();
+        }
+    }
 }

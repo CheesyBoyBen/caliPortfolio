@@ -350,13 +350,20 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/PlanarReflection/PlanarReflection/PlanarReflectionManager.cs"
-"Assets/ScarecrowScript.cs"
+"Assets/Scripts/backgroundScript.cs"
+"Assets/Scripts/completeScript.cs"
 "Assets/Scripts/CoverObjectScript.cs"
 "Assets/Scripts/CoverPointScript.cs"
+"Assets/Scripts/doorScript.cs"
 "Assets/Scripts/EnemyController.cs"
 "Assets/Scripts/EnemyManagerScript.cs"
 "Assets/Scripts/FPSController.cs"
+"Assets/Scripts/levelManagerScript.cs"
+"Assets/Scripts/menuManagerScript.cs"
 "Assets/Scripts/MirrorScript.cs"
+"Assets/Scripts/pauseManagerScript.cs"
+"Assets/Scripts/ScarecrowScript.cs"
+"Assets/_Heathen Engineering/Samples/UX Examples/Flat Icons [Free]/ToggleSetAnimatorBoolean.cs"
 -langversion:9.0
 
 /deterministic

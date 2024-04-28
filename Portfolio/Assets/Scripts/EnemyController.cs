@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
     public bool safe;
     public bool seen;
 
+    public AudioSource audio;
+
     private void Start()
     {       
 
@@ -31,7 +33,7 @@ public class EnemyController : MonoBehaviour
         }
         else if (curCover.name == "End Door")
         {
-            safe = false;
+            safe = true;
         }
         else if (curCover.GetComponent<CoverPointScript>().coverLevel <= manager.GetComponent<EnemyManagerScript>().stealth)
         {
@@ -79,6 +81,8 @@ public class EnemyController : MonoBehaviour
     {
         curCover = cover;
         agent.SetDestination(curCover.transform.position);
+        Debug.Log(curCover.transform.position);
+        audio.Play();
     }
 
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8929590308583587018}
   - component: {fileID: 8929590308583587019}
   - component: {fileID: 8929590308583587060}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SWR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8929590308713615954}
   - component: {fileID: 8929590308713615955}
   - component: {fileID: 8929590308713615964}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NWL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 8929590309065182321}
   - component: {fileID: 8929590309065182322}
   - component: {fileID: 8929590309065182323}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NWR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 8929590309269226797}
   - component: {fileID: 8929590309269226798}
   - component: {fileID: 8929590309269226799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NEL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 8929590309294760373}
   - component: {fileID: 8929590309294760374}
   - component: {fileID: 8929590309294760375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SWL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 8929590309673381099}
   - component: {fileID: 8929590309673381012}
   - component: {fileID: 8929590309673381013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SEL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 8929590309798634246}
   - component: {fileID: 8929590309798634247}
   - component: {fileID: 8929590309798634240}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 8929590310183511566}
   - component: {fileID: 8929590310183511567}
   - component: {fileID: 8929590310183511560}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 8929590310220085174}
   - component: {fileID: 8929590310220085175}
   - component: {fileID: 8929590310220085168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Small Cover Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}

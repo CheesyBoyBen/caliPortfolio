@@ -21,8 +21,13 @@ public class FPSController : MonoBehaviour
     GameObject heldScarecrow = null;
 
     public GameObject scarecrow;
+    public int scarecrowCount;
 
     CharacterController characterController;
+
+    public Animator anim;
+
+    GameObject levelManager;
 
 
     // Start is called before the first frame update
@@ -31,25 +36,67 @@ public class FPSController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        levelManager = GameObject.FindGameObjectWithTag("GameController");
+
+        scarecrowCount = levelManager.GetComponent<levelManagerScript>().totalScarecrows;
+        levelManager.GetComponent<levelManagerScript>().updateText(scarecrowCount);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         #region Handles Movement
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+            Vector3 right = transform.TransformDirection(Vector3.right);
 
-        //Press Left Shift to run
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
-        float movementDirectionY = moveDirection.y;
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+            //Press Left Shift to run
+            bool isRunning = Input.GetKey(KeyCode.LeftShift);
+            float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+            float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+            float movementDirectionY = moveDirection.y;
+            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        #endregion
+            #endregion
 
-        #region Handles Jumping
+            anim.SetBool("Walking", false);
+            anim.SetBool("Walking Back", false);
+
+
+            if (Input.GetAxis("Vertical") > 0)
+            {
+                anim.SetBool("Walking", true);
+            }
+            else if (Input.GetAxis("Vertical") < 0)
+            {
+                anim.SetBool("Walking Back", true);
+
+            }
+            else
+            {
+                if (Input.GetAxis("Horizontal") > 0)
+                {
+                    anim.SetBool("Walking", true);
+                }
+                else if (Input.GetAxis("Horizontal") < 0)
+                {
+                    anim.SetBool("Walking", true);
+                }
+                else
+                {
+                    if (Random.Range(0, 100) == 100)
+                    {
+                        anim.SetTrigger("Random Trigger");
+
+                    }
+                }
+            }
+        }
+
+        /*#region Handles Jumping
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
@@ -64,12 +111,12 @@ public class FPSController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        #endregion
+        #endregion*/
 
         #region Handles Rotation
         characterController.Move(moveDirection * Time.deltaTime);
 
-        if (canMove)
+        if ((canMove) && (Cursor.lockState == CursorLockMode.Locked))
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
@@ -79,54 +126,83 @@ public class FPSController : MonoBehaviour
 
         #endregion
 
-        if ((Input.GetKeyDown(KeyCode.Mouse0)) && (heldScarecrow == null))
+
+
+        if ((Input.GetKeyDown(KeyCode.Mouse0)) && (heldScarecrow == null) && (Cursor.lockState == CursorLockMode.Locked))
         {
-            GameObject sc = Instantiate(scarecrow, new Vector3(transform.position.x, -0.08f, transform.position.z + 2f), transform.rotation);
+            if (scarecrowCount > 0)
+            {
+                GameObject sc = Instantiate(scarecrow, this.transform.GetChild(2).position, transform.rotation);
+                scarecrowCount--;
+
+                levelManager.GetComponent<levelManagerScript>().updateText(scarecrowCount);
+
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Cursor.lockState == CursorLockMode.Locked)
         {
-            if (heldScarecrow == null)
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                GameObject[] mirrors = GameObject.FindGameObjectsWithTag("Mirror");
-                GameObject[] scarecrows = GameObject.FindGameObjectsWithTag("Player");
-                GameObject closest = mirrors[0];
+                if (heldScarecrow == null)
+                {
+                    GameObject[] mirrors = GameObject.FindGameObjectsWithTag("Mirror");
+                    GameObject[] scarecrows = GameObject.FindGameObjectsWithTag("Player");
 
-                foreach (GameObject m in mirrors)
-                {
-                    if ((transform.position - m.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                    if ((mirrors.Length > 0) || (scarecrows.Length > 1))
                     {
-                        closest = m;
-                    }
-                }
-                foreach (GameObject s in scarecrows)
-                {
-                    if (s != this.gameObject)
-                    {
-                        if ((transform.position - s.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                        GameObject closest = null;
+
+                        if (scarecrows.Length > 1)
                         {
-                            closest = s;
+                            closest = scarecrows[1];
+                        }
+                        if (mirrors.Length > 0)
+                        {
+                            closest = mirrors[0];
+                        }
+
+
+                        foreach (GameObject m in mirrors)
+                        {
+                            if ((transform.position - m.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                            {
+                                closest = m;
+                            }
+                        }
+                        foreach (GameObject s in scarecrows)
+                        {
+                            if (s != this.gameObject)
+                            {
+                                if ((transform.position - s.transform.position).magnitude < (transform.position - closest.transform.position).magnitude)
+                                {
+                                    closest = s;
+                                }
+                            }
+                        }
+
+                        if ((transform.position - closest.transform.position).magnitude < 3)
+                        {
+                            if (closest.tag == "Mirror")
+                            {
+                                closest.GetComponent<MirrorScript>().turn();
+                            }
+                            if (closest.tag == "Player")
+                            {
+
+                                closest.GetComponent<ScarecrowScript>().PickUp();
+                                heldScarecrow = closest;
+                            }
                         }
                     }
-                }
 
-                if ((transform.position - closest.transform.position).magnitude < 3)
-                {
-                    if (closest.tag == "Mirror")
-                    {
-                        closest.GetComponent<MirrorScript>().turn();
-                    }
-                    if (closest.tag == "Player")
-                    {
-                        closest.GetComponent<ScarecrowScript>().PickUp();
-                        heldScarecrow = closest;
-                    }
+
                 }
-            }
-            else if (heldScarecrow != null)
-            {
-                heldScarecrow.GetComponent<ScarecrowScript>().Drop();
-                heldScarecrow = null;
+                else if (heldScarecrow != null)
+                {
+                    heldScarecrow.GetComponent<ScarecrowScript>().Drop();
+                    heldScarecrow = null;
+                }
             }
 
         }

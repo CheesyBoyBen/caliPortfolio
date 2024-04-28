@@ -12,7 +12,8 @@ public class MirrorScript : MonoBehaviour
     public RenderTexture renderTarget;
     public Camera reflectionCam;
     public Material floorMaterial;
-
+    [SerializeField]
+    private LayerMask openMask;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,8 @@ public class MirrorScript : MonoBehaviour
         GameObject reflectionCameraGO = new GameObject("ReflectionCamera");
         reflectionCam = reflectionCameraGO.AddComponent<Camera>();
         reflectionCam.enabled = false;
+        reflectionCam.cullingMask = openMask;
+
 
         renderTarget = new RenderTexture(Screen.width, Screen.height, 24);
 
